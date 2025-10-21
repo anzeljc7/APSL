@@ -18,6 +18,7 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'chevron.left': 'chevron-left',
   'person.3': 'group',
   'list.bullet': 'list',
   'gear': 'settings',
@@ -44,6 +45,11 @@ const MAPPING = {
   'arrow.right.square': 'logout',
   'trash': 'delete',
   'magnifyingglass': 'search',
+  'equal.circle': 'equal',
+  'eurosign.circle': 'euro',
+  'percent': 'percent',
+  'chart.pie': 'pie-chart',
+  'exclamationmark.triangle.fill': 'warning',
 } as IconMapping;
 
 /**

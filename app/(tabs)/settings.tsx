@@ -3,15 +3,13 @@ import { useApp } from '@/contexts/AppContext';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  Switch,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card, H2, H3, Text, XStack, YStack } from 'tamagui';
 
 export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -76,39 +74,63 @@ export default function SettingsScreen() {
     destructive?: boolean;
   }) => (
     <TouchableOpacity 
-      style={styles.settingItem} 
       onPress={onPress}
       disabled={!onPress}
     >
-      <View style={styles.settingLeft}>
-        <View style={[styles.settingIcon, destructive && styles.settingIconDestructive]}>
-          <IconSymbol name={icon} size={20} color={destructive ? '#FF3B30' : '#007AFF'} />
-        </View>
-        <View style={styles.settingText}>
-          <Text style={[styles.settingTitle, destructive && styles.settingTitleDestructive]}>
-            {title}
-          </Text>
-          {subtitle && (
-            <Text style={styles.settingSubtitle}>{subtitle}</Text>
-          )}
-        </View>
-      </View>
-      {rightElement || (
-        onPress && <IconSymbol name="chevron.right" size={16} color="#8E8E93" />
-      )}
+      <Card
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        backgroundColor="$surface"
+        paddingHorizontal="$6"
+        paddingVertical="$4"
+        borderBottomWidth={1}
+        borderBottomColor="$borderLight"
+      >
+        <XStack alignItems="center" flex={1}>
+          <YStack
+            width={32}
+            height={32}
+            borderRadius={16}
+            backgroundColor={destructive ? '$error' : '$borderLight'}
+            justifyContent="center"
+            alignItems="center"
+            marginRight="$3"
+          >
+            <IconSymbol name={icon as any} size={20} color={destructive ? '#FF3B30' : '#007AFF'} />
+          </YStack>
+          <YStack flex={1}>
+            <Text fontSize="$4" fontWeight="500" color={destructive ? '$error' : '$color'} marginBottom="$1">
+              {title}
+            </Text>
+            {subtitle && (
+              <Text fontSize="$3" color="$colorTertiary">
+                {subtitle}
+              </Text>
+            )}
+          </YStack>
+        </XStack>
+        {rightElement || (
+          onPress && <IconSymbol name="chevron.right" size={16} color="#8E8E93" />
+        )}
+      </Card>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Settings</Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '$background' }}>
+      <YStack paddingHorizontal="$6" paddingTop="$5" paddingBottom="$4">
+        <H2 fontWeight="bold" color="$color">
+          Settings
+        </H2>
+      </YStack>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* Profile Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Profile</Text>
+        <YStack marginBottom="$8">
+          <H3 fontSize="$4" fontWeight="600" color="$colorTertiary" marginBottom="$2" paddingHorizontal="$6" textTransform="uppercase" letterSpacing={0.5}>
+            Profile
+          </H3>
           <SettingItem
             icon="person.circle"
             title="Personal Information"
@@ -129,16 +151,18 @@ export default function SettingsScreen() {
               <Switch
                 value={biometricEnabled}
                 onValueChange={setBiometricEnabled}
-                trackColor={{ false: '#E0E0E0', true: '#007AFF' }}
-                thumbColor="#ffffff"
+                trackColor={{ false: '$borderColor', true: '$primary' }}
+                thumbColor="$white"
               />
             }
           />
-        </View>
+        </YStack>
 
         {/* Preferences Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
+        <YStack marginBottom="$8">
+          <H3 fontSize="$4" fontWeight="600" color="$colorTertiary" marginBottom="$2" paddingHorizontal="$6" textTransform="uppercase" letterSpacing={0.5}>
+            Preferences
+          </H3>
           <SettingItem
             icon="bell"
             title="Push Notifications"
@@ -147,8 +171,8 @@ export default function SettingsScreen() {
               <Switch
                 value={notificationsEnabled}
                 onValueChange={setNotificationsEnabled}
-                trackColor={{ false: '#E0E0E0', true: '#007AFF' }}
-                thumbColor="#ffffff"
+                trackColor={{ false: '$borderColor', true: '$primary' }}
+                thumbColor="$white"
               />
             }
           />
@@ -160,8 +184,8 @@ export default function SettingsScreen() {
               <Switch
                 value={darkModeEnabled}
                 onValueChange={setDarkModeEnabled}
-                trackColor={{ false: '#E0E0E0', true: '#007AFF' }}
-                thumbColor="#ffffff"
+                trackColor={{ false: '$borderColor', true: '$primary' }}
+                thumbColor="$white"
               />
             }
           />
@@ -171,11 +195,13 @@ export default function SettingsScreen() {
             subtitle="English"
             onPress={() => router.push('/language')}
           />
-        </View>
+        </YStack>
 
         {/* Security Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Security</Text>
+        <YStack marginBottom="$8">
+          <H3 fontSize="$4" fontWeight="600" color="$colorTertiary" marginBottom="$2" paddingHorizontal="$6" textTransform="uppercase" letterSpacing={0.5}>
+            Security
+          </H3>
           <SettingItem
             icon="lock"
             title="Payment Limits"
@@ -194,11 +220,13 @@ export default function SettingsScreen() {
             subtitle="View legal documents"
             onPress={() => router.push('/terms')}
           />
-        </View>
+        </YStack>
 
         {/* Support Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Support</Text>
+        <YStack marginBottom="$8">
+          <H3 fontSize="$4" fontWeight="600" color="$colorTertiary" marginBottom="$2" paddingHorizontal="$6" textTransform="uppercase" letterSpacing={0.5}>
+            Support
+          </H3>
           <SettingItem
             icon="questionmark.circle"
             title="Help & FAQ"
@@ -217,11 +245,13 @@ export default function SettingsScreen() {
             subtitle="Version 1.0.0"
             onPress={() => router.push('/about')}
           />
-        </View>
+        </YStack>
 
         {/* Account Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
+        <YStack marginBottom="$8">
+          <H3 fontSize="$4" fontWeight="600" color="$colorTertiary" marginBottom="$2" paddingHorizontal="$6" textTransform="uppercase" letterSpacing={0.5}>
+            Account
+          </H3>
           <SettingItem
             icon="arrow.right.square"
             title="Logout"
@@ -234,106 +264,19 @@ export default function SettingsScreen() {
             onPress={handleDeleteAccount}
             destructive
           />
-        </View>
+        </YStack>
 
         {/* App Version */}
-        <View style={styles.versionContainer}>
-          <Text style={styles.versionText}>Flik Pay v1.0.0</Text>
-          <Text style={styles.versionSubtext}>
+        <YStack alignItems="center" paddingVertical="$8" paddingHorizontal="$6">
+          <Text fontSize="$4" fontWeight="600" color="$colorTertiary" marginBottom="$1">
+            Flik Pay v1.0.0
+          </Text>
+          <Text fontSize="$3" color="$colorTertiary">
             Powered by UniCredit Bank Slovenia
           </Text>
-        </View>
+        </YStack>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F2F2F7',
-  },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 16,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#000000',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#8E8E93',
-    marginBottom: 8,
-    paddingHorizontal: 24,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
-  },
-  settingLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  settingIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#F0F0F0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  settingIconDestructive: {
-    backgroundColor: '#FFE5E5',
-  },
-  settingText: {
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000000',
-    marginBottom: 2,
-  },
-  settingTitleDestructive: {
-    color: '#FF3B30',
-  },
-  settingSubtitle: {
-    fontSize: 14,
-    color: '#8E8E93',
-  },
-  versionContainer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-    paddingHorizontal: 24,
-  },
-  versionText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#8E8E93',
-    marginBottom: 4,
-  },
-  versionSubtext: {
-    fontSize: 14,
-    color: '#8E8E93',
-  },
-});

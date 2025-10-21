@@ -1,13 +1,7 @@
-import { BorderRadius, Colors, Shadows } from '@/constants/theme';
 import React from 'react';
-import {
-    StyleSheet,
-    TouchableOpacity,
-    TouchableOpacityProps,
-    View,
-} from 'react-native';
+import { Card as TamaguiCard, CardProps as TamaguiCardProps } from 'tamagui';
 
-interface CardProps extends TouchableOpacityProps {
+interface CardProps extends Omit<TamaguiCardProps, 'children'> {
   children: React.ReactNode;
   padding?: 'sm' | 'md' | 'lg';
   shadow?: 'none' | 'sm' | 'base' | 'md' | 'lg';
@@ -19,73 +13,91 @@ export const Card: React.FC<CardProps> = ({
   padding = 'md',
   shadow = 'base',
   variant = 'default',
-  style,
   ...props
 }) => {
-  const cardStyle = [
-    styles.base,
-    styles[variant],
-    styles[`padding${padding.charAt(0).toUpperCase() + padding.slice(1)}` as keyof typeof styles],
-    shadow !== 'none' && styles[`shadow${shadow.charAt(0).toUpperCase() + shadow.slice(1)}` as keyof typeof styles],
-    style,
-  ].filter(Boolean);
+  const getPaddingProps = () => {
+    switch (padding) {
+      case 'sm':
+        return { padding: '$3' };
+      case 'md':
+        return { padding: '$4' };
+      case 'lg':
+        return { padding: '$5' };
+      default:
+        return { padding: '$4' };
+    }
+  };
 
-  if (props.onPress) {
-    return (
-      <TouchableOpacity style={cardStyle} activeOpacity={0.95} {...props}>
-        {children}
-      </TouchableOpacity>
-    );
-  }
+  const getShadowProps = () => {
+    if (shadow === 'none') return {};
+    
+    switch (shadow) {
+      case 'sm':
+        return { 
+          shadowColor: '$shadowColor',
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.05,
+          shadowRadius: 2,
+          elevation: 1,
+        };
+      case 'base':
+        return { 
+          shadowColor: '$shadowColor',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 2,
+        };
+      case 'md':
+        return { 
+          shadowColor: '$shadowColor',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.1,
+          shadowRadius: 8,
+          elevation: 4,
+        };
+      case 'lg':
+        return { 
+          shadowColor: '$shadowColor',
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 0.15,
+          shadowRadius: 16,
+          elevation: 8,
+        };
+      default:
+        return { 
+          shadowColor: '$shadowColor',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 2,
+        };
+    }
+  };
+
+  const getVariantProps = () => {
+    switch (variant) {
+      case 'outlined':
+        return { bordered: true };
+      case 'elevated':
+        return { 
+          backgroundColor: '$surface',
+          ...getShadowProps(),
+        };
+      default:
+        return { backgroundColor: '$surface' };
+    }
+  };
 
   return (
-    <View style={cardStyle} {...props}>
+    <TamaguiCard
+      {...getPaddingProps()}
+      {...getVariantProps()}
+      borderRadius="$md"
+      {...props}
+    >
       {children}
-    </View>
+    </TamaguiCard>
   );
 };
 
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: BorderRadius.md,
-    backgroundColor: Colors.light.surface,
-  },
-  
-  // Variants
-  default: {
-    backgroundColor: Colors.light.surface,
-  },
-  outlined: {
-    backgroundColor: Colors.light.surface,
-    borderWidth: 1,
-    borderColor: Colors.light.border,
-  },
-  elevated: {
-    backgroundColor: Colors.light.surface,
-  },
-  
-  // Padding variants
-  paddingSm: {
-    padding: 12,
-  },
-  paddingMd: {
-    padding: 16,
-  },
-  paddingLg: {
-    padding: 20,
-  },
-  
-  // Shadow variants
-  shadowSm: {
-    ...Shadows.sm,
-  },
-  shadowBase: {
-    ...Shadows.base,
-  },
-  shadowMd: {
-    ...Shadows.md,
-  },
-  shadowLg: {
-    ...Shadows.lg,
-  },
-});

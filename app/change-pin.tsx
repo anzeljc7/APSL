@@ -45,7 +45,7 @@ export default function ChangePinScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <IconSymbol name="chevron.right" size={24} color="#007AFF" />
+          <IconSymbol name="chevron.left" size={24} color="#007AFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Change PIN</Text>
         <View style={styles.placeholder} />
@@ -102,7 +102,6 @@ export default function ChangePinScreen() {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -171,3 +170,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+

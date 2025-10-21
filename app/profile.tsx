@@ -16,7 +16,7 @@ export default function ProfileScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <IconSymbol name="chevron.right" size={24} color="#007AFF" />
+          <IconSymbol name="chevron.left" size={24} color="#007AFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Personal Information</Text>
         <View style={styles.placeholder} />

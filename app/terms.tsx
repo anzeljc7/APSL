@@ -9,7 +9,7 @@ export default function TermsScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <IconSymbol name="chevron.right" size={24} color="#007AFF" />
+          <IconSymbol name="chevron.left" size={24} color="#007AFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Terms & Privacy</Text>
         <View style={styles.placeholder} />

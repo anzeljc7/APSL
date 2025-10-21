@@ -1,15 +1,7 @@
-import { BorderRadius, Colors, Fonts, Shadows } from '@/constants/theme';
 import React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableOpacityProps,
-    ViewStyle,
-} from 'react-native';
+import { Button as TamaguiButton, ButtonProps as TamaguiButtonProps } from 'tamagui';
 
-interface ButtonProps extends TouchableOpacityProps {
+interface ButtonProps extends Omit<TamaguiButtonProps, 'children' | 'variant'> {
   title: string;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
@@ -29,129 +21,58 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   leftIcon,
   rightIcon,
-  style,
   ...props
 }) => {
-  const isDisabled = disabled || loading;
+  const getVariantProps = () => {
+    switch (variant) {
+      case 'primary':
+        return { backgroundColor: '$primary' };
+      case 'secondary':
+        return { backgroundColor: '$secondary' };
+      case 'outline':
+        return { bordered: true, backgroundColor: 'transparent', borderColor: '$primary' };
+      case 'ghost':
+        return { backgroundColor: 'transparent' };
+      default:
+        return { backgroundColor: '$primary' };
+    }
+  };
 
-  const buttonStyle: ViewStyle[] = [
-    styles.base,
-    styles[variant],
-    styles[size],
-    fullWidth ? styles.fullWidth : {},
-    isDisabled ? styles.disabled : {},
-    style,
-  ].filter(Boolean);
-
-  const textStyle = [
-    styles.text,
-    styles[`${variant}Text`],
-    styles[`${size}Text`],
-    isDisabled && styles.disabledText,
-  ];
+  const getSizeProps = () => {
+    switch (size) {
+      case 'sm':
+        return { paddingHorizontal: '$3', paddingVertical: '$2' };
+      case 'md':
+        return { paddingHorizontal: '$4', paddingVertical: '$3' };
+      case 'lg':
+        return { paddingHorizontal: '$5', paddingVertical: '$4' };
+      default:
+        return { paddingHorizontal: '$4', paddingVertical: '$3' };
+    }
+  };
 
   return (
-    <TouchableOpacity
-      style={buttonStyle}
-      disabled={isDisabled}
-      activeOpacity={0.8}
+    <TamaguiButton
+      {...getVariantProps()}
+      {...getSizeProps()}
+      disabled={disabled || loading}
+      width={fullWidth ? '100%' : undefined}
+      opacity={disabled || loading ? 0.5 : 1}
+      borderRadius="$md"
       {...props}
     >
       {loading ? (
-        <ActivityIndicator
-          size="small"
-          color={variant === 'primary' ? '#FFFFFF' : Colors.brand.primary}
-        />
+        <TamaguiButton.Text>Loading...</TamaguiButton.Text>
       ) : (
         <>
-          {leftIcon && <>{leftIcon}</>}
-          <Text style={textStyle}>{title}</Text>
-          {rightIcon && <>{rightIcon}</>}
+          {leftIcon && leftIcon}
+          <TamaguiButton.Text color={variant === 'outline' || variant === 'ghost' ? '$primary' : '$white'}>
+            {title}
+          </TamaguiButton.Text>
+          {rightIcon && rightIcon}
         </>
       )}
-    </TouchableOpacity>
+    </TamaguiButton>
   );
 };
 
-const styles = StyleSheet.create({
-  base: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: BorderRadius.md,
-    ...Shadows.sm,
-  },
-  
-  // Variants
-  primary: {
-    backgroundColor: Colors.brand.primary,
-  },
-  secondary: {
-    backgroundColor: Colors.brand.secondary,
-  },
-  outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: Colors.brand.primary,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-  },
-  
-  // Sizes
-  sm: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    minHeight: 36,
-  },
-  md: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    minHeight: 44,
-  },
-  lg: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    minHeight: 52,
-  },
-  
-  // States
-  disabled: {
-    opacity: 0.5,
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  
-  // Text styles
-  text: {
-    fontWeight: Fonts.fontWeight.semibold,
-    textAlign: 'center',
-  },
-  primaryText: {
-    color: '#FFFFFF',
-  },
-  secondaryText: {
-    color: '#FFFFFF',
-  },
-  outlineText: {
-    color: Colors.brand.primary,
-  },
-  ghostText: {
-    color: Colors.brand.primary,
-  },
-  disabledText: {
-    opacity: 0.7,
-  },
-  
-  // Text sizes
-  smText: {
-    fontSize: Fonts.fontSize.sm,
-  },
-  mdText: {
-    fontSize: Fonts.fontSize.base,
-  },
-  lgText: {
-    fontSize: Fonts.fontSize.lg,
-  },
-});

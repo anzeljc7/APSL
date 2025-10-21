@@ -1,14 +1,7 @@
-import { BorderRadius, Colors, Fonts, Shadows } from '@/constants/theme';
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    TextInput,
-    TextInputProps,
-    View,
-} from 'react-native';
+import { Label, Input as TamaguiInput, InputProps as TamaguiInputProps, XStack, YStack } from 'tamagui';
 
-interface InputProps extends TextInputProps {
+interface InputProps extends Omit<TamaguiInputProps, 'children'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -24,116 +17,57 @@ export const Input: React.FC<InputProps> = ({
   leftIcon,
   rightIcon,
   containerStyle,
-  style,
   ...props
 }) => {
   const hasError = !!error;
-  const hasLeftIcon = !!leftIcon;
-  const hasRightIcon = !!rightIcon;
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      {label && <Text style={styles.label}>{label}</Text>}
+    <YStack space="$2" {...containerStyle}>
+      {label && (
+        <Label htmlFor={props.id} fontSize="$3" fontWeight="500" color="$color">
+          {label}
+        </Label>
+      )}
       
-      <View style={[
-        styles.inputContainer,
-        hasError && styles.inputContainerError,
-        hasLeftIcon && styles.inputContainerWithLeftIcon,
-        hasRightIcon && styles.inputContainerWithRightIcon,
-      ]}>
+      <XStack
+        alignItems="center"
+        backgroundColor="$surface"
+        borderWidth={1}
+        borderColor={hasError ? '$error' : '$borderColor'}
+        borderRadius="$md"
+        paddingHorizontal="$4"
+        paddingVertical="$3"
+        space="$2"
+      >
         {leftIcon && (
-          <View style={styles.leftIconContainer}>
+          <YStack alignItems="center" justifyContent="center">
             {leftIcon}
-          </View>
+          </YStack>
         )}
         
-        <TextInput
-          style={[
-            styles.input,
-            hasLeftIcon && styles.inputWithLeftIcon,
-            hasRightIcon && styles.inputWithRightIcon,
-            style,
-          ]}
-          placeholderTextColor={Colors.light.textTertiary}
+        <TamaguiInput
+          flex={1}
+          borderWidth={0}
+          backgroundColor="transparent"
+          fontSize="$4"
+          color="$color"
+          placeholderTextColor="$colorTertiary"
           {...props}
         />
         
         {rightIcon && (
-          <View style={styles.rightIconContainer}>
+          <YStack alignItems="center" justifyContent="center">
             {rightIcon}
-          </View>
+          </YStack>
         )}
-      </View>
+      </XStack>
       
       {(error || helperText) && (
-        <Text style={[styles.helperText, hasError && styles.errorText]}>
+        <Label fontSize="$3" color={hasError ? '$error' : '$colorSecondary'}>
           {error || helperText}
-        </Text>
+        </Label>
       )}
-    </View>
+    </YStack>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: Fonts.fontSize.sm,
-    fontWeight: Fonts.fontWeight.medium,
-    color: Colors.light.text,
-    marginBottom: 8,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.light.surface,
-    borderWidth: 1,
-    borderColor: Colors.light.border,
-    borderRadius: BorderRadius.md,
-    ...Shadows.sm,
-  },
-  inputContainerError: {
-    borderColor: Colors.brand.error,
-  },
-  inputContainerWithLeftIcon: {
-    paddingLeft: 0,
-  },
-  inputContainerWithRightIcon: {
-    paddingRight: 0,
-  },
-  input: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: Fonts.fontSize.base,
-    color: Colors.light.text,
-    backgroundColor: 'transparent',
-  },
-  inputWithLeftIcon: {
-    paddingLeft: 8,
-  },
-  inputWithRightIcon: {
-    paddingRight: 8,
-  },
-  leftIconContainer: {
-    paddingLeft: 16,
-    paddingRight: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  rightIconContainer: {
-    paddingRight: 16,
-    paddingLeft: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  helperText: {
-    fontSize: Fonts.fontSize.sm,
-    color: Colors.light.textSecondary,
-    marginTop: 4,
-  },
-  errorText: {
-    color: Colors.brand.error,
-  },
-});
