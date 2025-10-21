@@ -1,7 +1,7 @@
 // Fallback for using MaterialIcons on Android and web.
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
+import { SymbolViewProps, SymbolWeight } from 'expo-symbols';
 import { ComponentProps } from 'react';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
@@ -18,6 +18,32 @@ const MAPPING = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'person.3': 'group',
+  'list.bullet': 'list',
+  'gear': 'settings',
+  'arrow.up.circle.fill': 'keyboard-arrow-up',
+  'arrow.down.circle.fill': 'keyboard-arrow-down',
+  'qrcode': 'qr-code',
+  'person.badge.minus': 'person-remove',
+  'person.badge.plus': 'person-add',
+  'person.2': 'group',
+  'doc.text': 'description',
+  'checkmark.circle.fill': 'check-circle',
+  'plus': 'add',
+  'person.circle': 'account-circle',
+  'key': 'vpn-key',
+  'touchid': 'fingerprint',
+  'bell': 'notifications',
+  'moon': 'dark-mode',
+  'globe': 'language',
+  'lock': 'lock',
+  'shield': 'security',
+  'questionmark.circle': 'help',
+  'envelope': 'email',
+  'info.circle': 'info',
+  'arrow.right.square': 'logout',
+  'trash': 'delete',
+  'magnifyingglass': 'search',
 } as IconMapping;
 
 /**

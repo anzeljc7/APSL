@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { formatCurrency, generateId } from '@/utils';
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 export interface User {
   id: string;
@@ -84,23 +85,35 @@ interface AppContextType {
   debts: Debt[];
   settlements: Settlement[];
   isLoading: boolean;
+  error: string | null;
+  
+  // Authentication
   login: (taxNumber: string, activationCode: string) => Promise<boolean>;
   logout: () => void;
+  
+  // Transaction management
   addTransaction: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
   updateBalance: (amount: number) => void;
+  
   // Group management
   createGroup: (name: string, description?: string) => string;
   joinGroup: (groupId: string) => void;
   leaveGroup: (groupId: string) => void;
   addGroupMember: (groupId: string, member: Omit<GroupMember, 'id'>) => void;
+  
   // Expense management
   addExpense: (expense: Omit<Expense, 'id' | 'date'>) => void;
   updateExpense: (expenseId: string, updates: Partial<Expense>) => void;
   deleteExpense: (expenseId: string) => void;
+  
   // Debt settlement
   calculateDebts: (groupId?: string) => Debt[];
   settleDebt: (fromUserId: string, toUserId: string, amount: number, groupId?: string) => void;
   getGroupBalance: (groupId: string) => { userId: string; balance: number }[];
+  
+  // Utility functions
+  clearError: () => void;
+  formatCurrency: (amount: number) => string;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -124,6 +137,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [debts, setDebts] = useState<Debt[]>([]);
   const [settlements, setSettlements] = useState<Settlement[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Mock transactions data
   useEffect(() => {
@@ -208,8 +222,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setGroups(mockGroups);
   }, []);
 
-  const login = async (taxNumber: string, activationCode: string): Promise<boolean> => {
+  const login = useCallback(async (taxNumber: string, activationCode: string): Promise<boolean> => {
     setIsLoading(true);
+    setError(null);
     
     try {
       // Simulate API call
@@ -217,7 +232,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       
       // Mock successful login
       const mockUser: User = {
-        id: '1',
+        id: generateId(),
         taxNumber,
         name: 'John Smith',
         email: 'john.smith@example.com',
@@ -228,22 +243,24 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       
       setUser(mockUser);
       return true;
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Login failed';
+      setError(errorMessage);
       return false;
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
-  };
+    setError(null);
+  }, []);
 
-  const addTransaction = (transactionData: Omit<Transaction, 'id' | 'date'>) => {
+  const addTransaction = useCallback((transactionData: Omit<Transaction, 'id' | 'date'>) => {
     const newTransaction: Transaction = {
       ...transactionData,
-      id: Date.now().toString(),
+      id: generateId(),
       date: new Date().toISOString(),
     };
     
@@ -260,7 +277,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         balance: prev.balance + balanceChange,
       } : null);
     }
-  };
+  }, [user]);
 
   const updateBalance = (amount: number) => {
     if (user) {
@@ -480,13 +497,22 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }));
   };
 
-  const value: AppContextType = {
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
+  const formatCurrencyMemo = useCallback((amount: number) => {
+    return formatCurrency(amount);
+  }, []);
+
+  const value: AppContextType = useMemo(() => ({
     user,
     transactions,
     groups,
     debts,
     settlements,
     isLoading,
+    error,
     login,
     logout,
     addTransaction,
@@ -501,7 +527,33 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     calculateDebts,
     settleDebt,
     getGroupBalance,
-  };
+    clearError,
+    formatCurrency: formatCurrencyMemo,
+  }), [
+    user,
+    transactions,
+    groups,
+    debts,
+    settlements,
+    isLoading,
+    error,
+    login,
+    logout,
+    addTransaction,
+    updateBalance,
+    createGroup,
+    joinGroup,
+    leaveGroup,
+    addGroupMember,
+    addExpense,
+    updateExpense,
+    deleteExpense,
+    calculateDebts,
+    settleDebt,
+    getGroupBalance,
+    clearError,
+    formatCurrencyMemo,
+  ]);
 
   return (
     <AppContext.Provider value={value}>

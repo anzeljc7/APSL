@@ -1,4 +1,6 @@
+import { Card } from '@/components/ui/card';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { BorderRadius, Colors, Fonts, Spacing } from '@/constants/theme';
 import { useApp } from '@/contexts/AppContext';
 import { router } from 'expo-router';
 import React from 'react';
@@ -12,7 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
-  const { user, transactions } = useApp();
+  const { user, transactions, formatCurrency } = useApp();
 
   const handleSendMoney = () => {
     router.push('/send-money');
@@ -48,10 +50,10 @@ export default function HomeScreen() {
         </View>
 
         {/* Balance Card */}
-        <View style={styles.balanceCard}>
+        <Card style={styles.balanceCard} shadow="md">
           <Text style={styles.balanceLabel}>Available Balance</Text>
-          <Text style={styles.balanceAmount}>€{user?.balance.toFixed(2) || '0.00'}</Text>
-        </View>
+          <Text style={styles.balanceAmount}>{formatCurrency(user?.balance || 0)}</Text>
+        </Card>
 
         {/* Quick Actions */}
         <View style={styles.quickActions}>
@@ -142,7 +144,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: Colors.light.background,
   },
   scrollView: {
     flex: 1,
@@ -150,66 +152,55 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingHorizontal: Spacing[6],
+    paddingTop: Spacing[5],
+    paddingBottom: Spacing[5],
   },
   logoContainer: {
-    marginRight: 16,
+    marginRight: Spacing[4],
   },
   logo: {
     width: 50,
     height: 50,
-    borderRadius: 25,
-    backgroundColor: '#000000',
+    borderRadius: BorderRadius.full,
+    backgroundColor: Colors.neutral.black,
     justifyContent: 'center',
     alignItems: 'center',
   },
   logoText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: Colors.neutral.white,
+    fontSize: Fonts.fontSize.lg,
+    fontWeight: Fonts.fontWeight.bold,
   },
   welcomeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000000',
+    fontSize: Fonts.fontSize['2xl'],
+    fontWeight: Fonts.fontWeight.bold,
+    color: Colors.light.text,
   },
   balanceCard: {
-    backgroundColor: '#ffffff',
-    marginHorizontal: 24,
-    marginBottom: 24,
-    padding: 24,
-    borderRadius: 16,
+    marginHorizontal: Spacing[6],
+    marginBottom: Spacing[6],
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
   },
   balanceLabel: {
-    fontSize: 16,
-    color: '#666666',
-    marginBottom: 8,
+    fontSize: Fonts.fontSize.base,
+    color: Colors.light.textSecondary,
+    marginBottom: Spacing[2],
   },
   balanceAmount: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#000000',
+    fontSize: Fonts.fontSize['5xl'],
+    fontWeight: Fonts.fontWeight.bold,
+    color: Colors.light.text,
   },
   quickActions: {
-    paddingHorizontal: 24,
-    marginBottom: 32,
+    paddingHorizontal: Spacing[6],
+    marginBottom: Spacing[8],
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000000',
-    marginBottom: 16,
+    fontSize: Fonts.fontSize.xl,
+    fontWeight: Fonts.fontWeight.bold,
+    color: Colors.light.text,
+    marginBottom: Spacing[4],
   },
   actionRow: {
     flexDirection: 'row',

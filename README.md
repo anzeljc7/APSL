@@ -1,166 +1,224 @@
-# Flik Pay Mobile Application
+# Flik Pay - Modern Payment App
 
-A React Native mobile payment app built with Expo, inspired by the Flik Pay system for UniCredit Bank Slovenia customers. Now enhanced with **Splitwise-like expense splitting functionality** for group expense management.
+A polished React Native payment application built with Expo, featuring modern UI components, comprehensive theming, and robust state management.
 
-## Features
+## 🚀 Features
 
-### 🔐 Authentication
-- **Login Screen**: Tax number and activation code authentication
-- **PIN Setup**: Secure 4-6 digit PIN creation
-- **Biometric Support**: Fingerprint and face ID integration
+- **Modern Payment Interface**: Clean, intuitive design with smooth animations
+- **Group Expense Splitting**: Create groups and split expenses with friends
+- **Transaction Management**: Track all payments with detailed history
+- **QR Code Payments**: Quick payments using QR codes
+- **Biometric Authentication**: Secure login with fingerprint/face ID
+- **Dark Mode Support**: Beautiful dark theme implementation
+- **Multi-language Support**: Internationalization ready
+- **Real-time Updates**: Live transaction and balance updates
 
-### 💰 Payment Features
-- **Send Money**: Transfer funds to contacts via phone/email
-- **QR Payments**: Scan QR codes for instant payments
-- **Request Money**: Send payment requests to contacts
-- **Transaction History**: View all past transactions with filtering
+## 🛠 Tech Stack
 
-### 👥 **Group Expense Management (Splitwise-like)**
-- **Create Groups**: Set up groups for different contexts (roommates, friends, family)
-- **Join/Leave Groups**: Easy group membership management
-- **Add Expenses**: Track shared expenses with detailed splitting options
-- **Smart Splitting**: Equal, exact amount, percentage, or shares-based splitting
-- **Automatic Debt Calculation**: Intelligent debt settlement with minimum transactions
-- **Real-time Balances**: See who owes what in real-time
-- **Settlement Tracking**: Track and manage debt settlements
+- **Framework**: React Native with Expo SDK 54
+- **Language**: TypeScript with strict type checking
+- **Navigation**: Expo Router with typed routes
+- **State Management**: React Context with performance optimizations
+- **UI Components**: Custom design system with reusable components
+- **Styling**: StyleSheet with comprehensive theme system
+- **Icons**: SF Symbols (iOS) / Material Icons (Android)
+- **Linting**: ESLint with comprehensive rules
+- **Code Quality**: Prettier formatting and strict TypeScript
 
-### 🏠 Main Dashboard
-- **Balance Display**: Real-time account balance
-- **Quick Actions**: Easy access to main features including groups
-- **Recent Transactions**: Latest payment activity
-- **Modern UI**: Clean, intuitive interface
+## 📱 Screens
 
-### ⚙️ Settings & Management
-- **Profile Management**: Update personal information
-- **Security Settings**: PIN, biometric, and 2FA options
-- **Preferences**: Notifications, language, dark mode
-- **Account Management**: Logout and account deletion
+### Authentication
+- **Login**: Tax number and activation code authentication
+- **PIN Setup**: Secure PIN configuration
+- **Biometric Setup**: Fingerprint/face ID configuration
 
-## Technical Stack
+### Main App
+- **Home**: Dashboard with balance, quick actions, and recent transactions
+- **Groups**: Create and manage expense groups
+- **Transactions**: Complete transaction history with filtering
+- **Settings**: Comprehensive app configuration
 
-- **Framework**: React Native with Expo
-- **Navigation**: Expo Router with stack and tab navigation
-- **State Management**: React Context API
-- **UI Components**: Custom components with consistent styling
-- **Icons**: Expo Symbols for native iOS/Android icons
-- **Platform Support**: iOS, Android, and Web
+### Additional Screens
+- **Profile**: Personal information management
+- **Payment Limits**: Transaction limit configuration
+- **Security**: Two-factor authentication and security settings
+- **Support**: Help, FAQ, and contact information
 
-## Project Structure
+## 🎨 Design System
+
+### Theme Architecture
+- **Comprehensive Color Palette**: Brand colors, neutrals, and semantic colors
+- **Typography System**: Consistent font sizes, weights, and line heights
+- **Spacing System**: 8px grid-based spacing scale
+- **Border Radius**: Consistent corner radius values
+- **Shadow System**: Layered shadow definitions
+- **Animation**: Standardized timing and easing
+
+### Components
+- **Button**: Multiple variants (primary, secondary, outline, ghost)
+- **Input**: Form inputs with validation and error states
+- **Card**: Flexible container component with shadow variants
+- **IconSymbol**: Cross-platform icon component
+
+## 🔧 Code Quality Improvements
+
+### TypeScript Enhancements
+- **Strict Mode**: Enabled all strict TypeScript checks
+- **Type Safety**: Comprehensive type definitions for all data structures
+- **Path Mapping**: Clean import paths with `@/` alias
+- **No Unused Code**: Automatic detection of unused variables and parameters
+
+### ESLint Configuration
+- **React Rules**: Optimized for React Native development
+- **Import Organization**: Automatic import sorting and grouping
+- **Code Quality**: Enforced best practices and patterns
+- **TypeScript Integration**: Seamless TypeScript linting
+
+### Performance Optimizations
+- **Memoization**: Strategic use of `useMemo` and `useCallback`
+- **Context Optimization**: Prevented unnecessary re-renders
+- **Component Splitting**: Modular component architecture
+- **Lazy Loading**: Optimized bundle splitting
+
+## 📁 Project Structure
 
 ```
 app/
-├── _layout.tsx              # Root layout with navigation
-├── login.tsx                # Authentication screen
-├── pin-setup.tsx           # PIN creation screen
-├── send-money.tsx          # Money transfer screen
-├── qr-payment.tsx          # QR code payment screen
-├── groups.tsx              # Groups management screen
-├── add-expense.tsx         # Add expense screen
-├── group/
-│   └── [groupId].tsx      # Group detail screen
-└── (tabs)/                 # Tab navigation screens
-    ├── _layout.tsx         # Tab layout configuration
-    ├── index.tsx          # Home dashboard
-    ├── groups.tsx         # Groups tab
-    ├── transactions.tsx   # Transaction history
-    └── settings.tsx       # Settings and preferences
-
-contexts/
-└── AppContext.tsx         # Global state management with expense splitting
+├── (tabs)/                 # Tab navigation screens
+│   ├── index.tsx          # Home screen
+│   ├── groups.tsx         # Groups tab
+│   ├── transactions.tsx   # Transactions tab
+│   └── settings.tsx       # Settings tab
+├── group/                 # Group-specific screens
+│   └── [groupId].tsx      # Dynamic group screen
+├── _layout.tsx            # Root layout with navigation
+└── *.tsx                  # Individual screens
 
 components/
-└── ui/                    # Reusable UI components
+├── ui/                    # Reusable UI components
+│   ├── button.tsx        # Button component
+│   ├── input.tsx         # Input component
+│   ├── card.tsx          # Card component
+│   └── icon-symbol.tsx   # Icon component
+└── *.tsx                 # Other components
+
+contexts/
+└── AppContext.tsx        # Global state management
+
+constants/
+└── theme.ts              # Design system and theming
+
+utils/
+└── index.ts              # Utility functions
+
+hooks/
+├── use-color-scheme.ts   # Color scheme detection
+└── use-theme-color.ts    # Theme color utilities
 ```
 
-## Key Features Implemented
+## 🚀 Getting Started
 
-### 🎨 Design System
-- Consistent Flik branding with black logo and blue accents
-- Modern card-based layout with shadows and rounded corners
-- Responsive design for different screen sizes
-- Clean typography and spacing
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+- Expo CLI
+- iOS Simulator or Android Emulator
 
-### 🔄 State Management
-- Global context for user data and transactions
-- Real-time balance updates
-- Transaction history management
-- Authentication state handling
+### Installation
 
-### 👥 **Expense Splitting System**
-- **Group Management**: Create, join, and manage expense groups
-- **Smart Splitting**: Multiple splitting methods (equal, exact, percentage, shares)
-- **Debt Calculation**: Automatic debt settlement with minimum transactions
-- **Real-time Balances**: Live updates of who owes what
-- **Expense Tracking**: Detailed expense history with categories
-- **Settlement Management**: Track and process debt settlements
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd flik-pay
+   ```
 
-### 📱 User Experience
-- Intuitive navigation flow
-- Loading states and error handling
-- Form validation and user feedback
-- Smooth animations and transitions
-
-## Getting Started
-
-1. **Install Dependencies**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Start Development Server**
+3. **Start the development server**
    ```bash
    npm start
    ```
 
-3. **Run on Device**
+4. **Run on specific platforms**
    ```bash
-   npm run ios     # iOS Simulator
-   npm run android # Android Emulator
-   npm run web     # Web Browser
+   npm run ios      # iOS Simulator
+   npm run android  # Android Emulator
+   npm run web      # Web browser
    ```
 
-## Mock Data
+### Development Commands
 
-The app includes realistic mock data for demonstration:
-- Sample user profile with balance
-- Transaction history with various payment types
-- Contact information and payment details
-- **Sample Groups**: Roommates and vacation friends groups
-- **Expense Categories**: Food, transport, entertainment, etc.
-- **Member Management**: Multiple users with different balances
+```bash
+npm start          # Start Expo development server
+npm run lint       # Run ESLint
+npm run reset      # Reset project to template
+```
 
-## Security Features
+## 🎯 Key Improvements Made
 
-- PIN-based authentication
-- Biometric login support
-- Secure transaction processing
-- Balance validation before payments
-- Account protection measures
+### 1. **Enhanced Type Safety**
+- Strict TypeScript configuration
+- Comprehensive type definitions
+- Eliminated `any` types where possible
 
-## Future Enhancements
+### 2. **Modern Component Architecture**
+- Reusable UI components with consistent APIs
+- Proper prop typing and validation
+- Performance-optimized with memoization
 
-- Real API integration with banking backend
-- Push notifications for payments and expense updates
-- Contact synchronization
-- Advanced security features
-- Multi-language support
-- Dark mode implementation
-- **Receipt Scanning**: OCR for automatic expense entry
-- **Location Services**: Auto-suggest merchants based on location
-- **Advanced Analytics**: Spending insights and reports
-- **Recurring Expenses**: Set up recurring shared expenses
-- **Payment Integration**: Direct payment processing for settlements
+### 3. **Comprehensive Theme System**
+- Design tokens for colors, spacing, typography
+- Dark mode support
+- Consistent styling across the app
 
-## Design Inspiration
+### 4. **Improved State Management**
+- Optimized context with `useMemo` and `useCallback`
+- Better error handling and loading states
+- Clean separation of concerns
 
-Based on the Flik Pay mobile application for UniCredit Bank Slovenia, featuring:
-- Instant peer-to-peer payments
-- QR code payment processing
-- Contact-based transfers
-- Real-time transaction updates
-- Bank-level security standards
-- **Splitwise Integration**: Group expense management and debt settlement
+### 5. **Code Quality**
+- ESLint with comprehensive rules
+- Consistent code formatting
+- Proper import organization
+
+### 6. **Performance Optimizations**
+- Reduced unnecessary re-renders
+- Optimized bundle size
+- Efficient data structures
+
+### 7. **Developer Experience**
+- Better error messages
+- Comprehensive documentation
+- Easy-to-use utility functions
+
+## 🔮 Future Enhancements
+
+- **Real API Integration**: Replace mock data with actual API calls
+- **Push Notifications**: Real-time transaction notifications
+- **Offline Support**: Cache data for offline usage
+- **Advanced Security**: Biometric authentication implementation
+- **Analytics**: User behavior tracking and insights
+- **Testing**: Comprehensive test suite with Jest and React Native Testing Library
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+For support and questions, please contact the development team or create an issue in the repository.
 
 ---
 
-Built with ❤️ using React Native and Expo
+**Built with ❤️ using React Native and Expo**
